@@ -46,49 +46,64 @@ Sistema::~Sistema() {
 }
 
 
-void Sistema::cargarHuespedes(const char* nombreArchivo) {
+void Sistema::cargarHuespedes(const char* nombreArchivo) { //falta cambiar por el nombre del archivo
+
     ifstream archivo(nombreArchivo);
     if (!archivo) {
         cout << "Error al abrir el archivo de huespedes: " << nombreArchivo << endl;
         return;
     }
 
+    /*ejemplo de Huespedes.txt:
+    documento, antiguedad, puntuacion
+    1234, 12, 4.5
+    */
+
     char linea[100];
     while (archivo.getline(linea, 100)) {
-        // Parsear la línea
+        // Obtener los tokens directamente sin new
+        char* token = strtok(linea, ","); //strtok me permite sacar una linea de codigo hasta llegar a un separador, en este caso, es la coma
+        if (!token) continue; //continue me permite seguir y pasar de linea en caso de error
+        char* documento = token;
 
-        //sacamos el documento
-        char* token = strtok(linea, ",");  //se usa strtok para separ en partes usando un separador, en este caso la coma
-        if (!token) continue; //continue permite que si hay errores salte a la siguiente linea de codigo
-        char* documento = new char[strlen(token) + 1];
-        strcpy(documento, token);
-
-        //sacamos la antiguedad
         token = strtok(NULL, ",");
         if (!token) continue;
         int antiguedad = atoi(token);
 
-        //sacamos la puntuacion
         token = strtok(NULL, ",");
         if (!token) continue;
         float puntuacion = atof(token);
 
-        // Crear el Huesped y agregar al arreglo
+        // Crear el Huesped (el constructor hace su propia copia del documento)
         Huesped* nuevo = new Huesped(documento, antiguedad, puntuacion);
 
-        // Redimensionar arreglo huespedes
+        // Redimensionar el arreglo de huéspedes
         Huesped** nuevoArreglo = new Huesped*[cantidadHuespedes + 1];
         for (int i = 0; i < cantidadHuespedes; i++) {
             nuevoArreglo[i] = huespedes[i];
         }
         nuevoArreglo[cantidadHuespedes] = nuevo;
 
-        delete[] huespedes;
+        delete[] huespedes; // eliminar el arreglo viejo (no los objetos)
         huespedes = nuevoArreglo;
         cantidadHuespedes++;
-
-        delete[] documento; // ya fue copiado internamente por Huesped
     }
 
     archivo.close();
 }
+
+void Sistema::cargarAnfitriones(const char* nombreArchivoAnfitriones){
+    ifstream archivo(nombreArchivoAnfitriones);
+    if (!archivo) {
+        cout << "Error al abrir el archivo de anfitriones: " << nombreArchivoAnfitriones << endl;
+        return;
+    }
+
+    /*ejemplo de Anfitriones.txt:
+    documento, antiguedad, puntuacion
+    1234, 12, 4.5
+    */
+
+
+}
+

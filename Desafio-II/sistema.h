@@ -26,6 +26,7 @@ public:
 
     void cargarDatos();
     void cargarHuespedes(const char* nombreArchivo);
+    void cargarAnfitriones(const char* nombreArchivoAnfitriones);
     // futuras: cargarAnfitriones, cargarAlojamientos, etc.
 };
 

@@ -10,7 +10,7 @@ protected:
 public:
     Usuario(); // constructor por defecto
     virtual ~Usuario(); // destructor virtual
-    virtual const char* getDocumento() const = 0; // método puro
+    virtual const char* getDocumento() const = 0; // método puro // se usa virtual para poder usar el polimorfismo dinamico, es decir, cuando se usan punteros y demas
     virtual void mostrarMenu() = 0;
 };
 
