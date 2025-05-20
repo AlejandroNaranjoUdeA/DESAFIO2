@@ -20,6 +20,7 @@ private:
     Reservacion** historico;
     int cantidadHistorico;
 
+
 public:
     Sistema();
     ~Sistema();
@@ -27,7 +28,12 @@ public:
     void cargarDatos();
     void cargarHuespedes(const char* nombreArchivo);
     void cargarAnfitriones(const char* nombreArchivoAnfitriones);
-    // futuras: cargarAnfitriones, cargarAlojamientos, etc.
+    void cargarAlojamineto(const char* nombreArchivoAlojamiento);
+    void cargarReservaciones(const char* nombreArchivoReservaciones);
+    void guardarHistorico(const char* nombreArchivoHistorial);
+
+    Usuario* login(const char* documentoBuscado);
+
 };
 
 #endif // SISTEMA_H
