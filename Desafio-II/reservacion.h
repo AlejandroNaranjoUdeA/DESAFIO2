@@ -1,8 +1,8 @@
 #ifndef RESERVACION_H
 #define RESERVACION_H
 
+class Alojamiento;
 #include "huesped.h"
-#include "alojamiento.h"
 
 class Reservacion {
 private:

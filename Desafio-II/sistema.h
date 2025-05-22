@@ -34,6 +34,9 @@ public:
 
     Usuario* login(const char* documentoBuscado);
 
+    void buscarAlojamientosDisponibles(int fechaInicio, int duracion, const char* municipio, float precioMax = -1, float puntuacionMin = -1);
+
+
 };
 
 #endif // SISTEMA_H

@@ -10,3 +10,7 @@ Usuario::Usuario() {
 Usuario::~Usuario() {
     if (documento) delete[] documento;
 }
+
+float Usuario::getPuntuacion() const {
+    return puntuacion;
+}

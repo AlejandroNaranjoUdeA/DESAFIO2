@@ -12,6 +12,9 @@ public:
     virtual ~Usuario(); // destructor virtual
     virtual const char* getDocumento() const = 0; // método puro // se usa virtual para poder usar el polimorfismo dinamico, es decir, cuando se usan punteros y demas
     virtual void mostrarMenu() = 0;
+
+    float getPuntuacion() const;
+
 };
 
 #endif // USUARIO_H

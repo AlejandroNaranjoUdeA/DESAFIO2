@@ -14,5 +14,10 @@ const char* Huesped::getDocumento() const {
 }
 
 void Huesped::mostrarMenu() {
-    std::cout << "[Menu de Huesped] (por implementar)\n";
+    std::cout << "\n===== MENU DE HUESPED =====\n";
+    std::cout << "1. Ver alojamientos disponibles\n";
+    std::cout << "2. Reservar alojamiento\n";
+    std::cout << "3. Anular reservacion\n";
+    std::cout << "4. Cerrar sesion\n";
+    std::cout << "============================\n";
 }

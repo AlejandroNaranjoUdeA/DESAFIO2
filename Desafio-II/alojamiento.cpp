@@ -14,14 +14,61 @@ Alojamiento::Alojamiento(const char* cod, const char* dir, const char* mun, char
     tipo = t;
     precioPorNoche = precio;
     anfitrion = a;
+
+    reservas = nullptr;
+    cantidadReservas = 0;
 }
 
 Alojamiento::~Alojamiento() {
     delete[] codigo;
     delete[] direccion;
     delete[] municipio;
+
+    // Liberar las reservaciones
+    for (int i = 0; i < cantidadReservas; i++) {
+        delete reservas[i];
+    }
+    delete[] reservas;
+
 }
 
 const char* Alojamiento::getCodigo() const {
     return codigo;
+}
+
+const char* Alojamiento::getDireccion() const {
+    return direccion;
+}
+
+const char* Alojamiento::getMunicipio() const {
+    return municipio;
+}
+
+float Alojamiento::getPrecioPorNoche() const {
+    return precioPorNoche;
+}
+
+Anfitrion* Alojamiento::getAnfitrion() const {
+    return anfitrion;
+}
+
+Reservacion** Alojamiento::getReservas() const {
+    return reservas;
+}
+
+int Alojamiento::getCantidadReservas() const {
+    return cantidadReservas;
+}
+
+// Agregar reservación
+void Alojamiento::agregarReservacion(Reservacion* r) {
+    Reservacion** nuevo = new Reservacion*[cantidadReservas + 1];
+    for (int i = 0; i < cantidadReservas; i++) {
+        nuevo[i] = reservas[i];
+    }
+    nuevo[cantidadReservas] = r;
+
+    delete[] reservas;
+    reservas = nuevo;
+    cantidadReservas++;
 }

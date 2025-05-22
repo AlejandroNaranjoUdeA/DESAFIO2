@@ -14,5 +14,9 @@ const char* Anfitrion::getDocumento() const {
 }
 
 void Anfitrion::mostrarMenu() {
-    std::cout << "[Menu de Anfitrion] (por implementar)\n";
+    std::cout << "\n===== MENU DE ANFITRION =====\n";
+    std::cout << "1. Consultar mis alojamientos\n";
+    std::cout << "2. Consultar reservaciones recibidas\n";
+    std::cout << "3. Cerrar sesion\n";
+    std::cout << "==============================\n";
 }

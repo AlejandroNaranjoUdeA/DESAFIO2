@@ -1,4 +1,5 @@
 #include "reservacion.h"
+#include "alojamiento.h"
 #include <cstring>
 
 Reservacion::Reservacion(const char* cod, int fecha, int dur, const char* metodo,int fPago, float m, const char* nota, Huesped* h, Alojamiento* a){

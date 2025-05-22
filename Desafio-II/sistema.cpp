@@ -354,4 +354,55 @@ Usuario* Sistema::login(const char* documentoBuscado) {
     return nullptr;
 }
 
+//funcion para buscar los alojamientos:
+void Sistema::buscarAlojamientosDisponibles(int fechaInicio, int duracion, const char* municipio, float precioMax, float puntuacionMin){
+    std::cout<<"\nBuscando alojamientos disponibles en: "<<municipio<<std::endl;
+
+    unsigned int encontrados=0;
+
+    for(int i=0; i<cantidadAlojamientos; i++){
+        Alojamiento *a= alojamientos[i];
+
+        //filtro de municipio:
+        if (strcmp(a->getMunicipio(), municipio) != 0) continue; //strcmp compara 2 cadenas de caracteres, en este caso, si no son iguales, continue
+
+        // Filtro por precio (si aplica)
+        if (precioMax != -1 && a->getPrecioPorNoche() > precioMax) continue;
+
+        // Filtro por puntuación del anfitrión (si aplica)
+        if (puntuacionMin != -1 && a->getAnfitrion()->getPuntuacion() < puntuacionMin) continue;
+
+        // Verificar disponibilidad para la fecha y duracion
+        bool disponible = true;
+        for (int j = 0; j < a->getCantidadReservas(); j++) {
+            Reservacion* r = a->getReservas()[j];
+            int f1 = fechaInicio;
+            int f2 = fechaInicio + duracion - 1;
+            int r1 = r->getFechaInicio();
+            int r2 = r1 + r->getDuracion() - 1;
+
+            if (!(f2 < r1 || f1 > r2)) {
+                disponible = false;
+                break;
+            }
+        }
+
+        if (!disponible) continue;
+
+        // Mostrar alojamiento disponible
+        std::cout << "\n[" << encontrados + 1 << "] "
+                  << "Codigo: " << a->getCodigo()
+                  << ", Direccion: " << a->getDireccion()
+                  << ", Precio/noche: $" << a->getPrecioPorNoche()
+                  << ", Puntuacion anfitrion: " << a->getAnfitrion()->getPuntuacion()
+                  << std::endl;
+
+        encontrados++;
+    }
+
+    if (encontrados == 0) {
+        std::cout << "No se encontraron alojamientos disponibles con los criterios dados.\n";
+    }
+}
+
 
