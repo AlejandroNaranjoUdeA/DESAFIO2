@@ -406,3 +406,102 @@ void Sistema::buscarAlojamientosDisponibles(int fechaInicio, int duracion, const
 }
 
 
+void Sistema::reservarAlojamiento(Huesped *h){
+    int fechaInicio, duracion;
+    char municipio[50];
+    float precioMax, puntMin;
+
+    std::cout << "\n--- Reserva de alojamiento ---\n";
+    std::cout << "Fecha de inicio (AAAAMMDD): ";
+    std::cin >> fechaInicio;
+    std::cout << "Cantidad de noches: ";
+    std::cin >> duracion;
+    std::cin.ignore();
+
+    std::cout << "Municipio: ";
+    std::cin.getline(municipio, 50);
+
+    std::cout << "Precio maximo por noche (-1 si no aplica): ";
+    std::cin >> precioMax;
+
+    std::cout << "Puntuacion minima del anfitrion (-1 si no aplica): ";
+    std::cin >> puntMin;
+    std::cin.ignore();
+
+    // Mostrar alojamientos disponibles
+    buscarAlojamientosDisponibles(fechaInicio, duracion, municipio, precioMax, puntMin);
+
+    // Seleccionar uno
+    std::cout << "\nIngrese el codigo del alojamiento a reservar: ";
+    char codigo[10];
+    std::cin.getline(codigo, 10);
+
+    Alojamiento* elegido = nullptr;
+    for (int i = 0; i < cantidadAlojamientos; i++) {
+        if (strcmp(alojamientos[i]->getCodigo(), codigo) == 0) {
+            elegido = alojamientos[i];
+            break;
+        }
+    }
+
+    if (!elegido) {
+        std::cout << "Alojamiento no encontrado.\n";
+        return;
+    }
+
+    // Verificar disponibilidad en alojamiento
+    int f1 = fechaInicio;
+    int f2 = fechaInicio + duracion - 1;
+    for (int i = 0; i < elegido->getCantidadReservas(); i++) {
+        Reservacion* r = elegido->getReservas()[i];
+        int r1 = r->getFechaInicio();
+        int r2 = r1 + r->getDuracion() - 1;
+        if (!(f2 < r1 || f1 > r2)) {
+            std::cout << "El alojamiento no está disponible en esas fechas.\n";
+            return;
+        }
+    }
+
+    ///////////////////////////////////////////////////////
+    ///
+
+
+    // Verificar que el huésped no tenga traslapes
+    for (int i = 0; i < h->getCantidadReservas(); i++) {
+        Reservacion* r = h->getReservas()[i];
+        int r1 = r->getFechaInicio();
+        int r2 = r1 + r->getDuracion() - 1;
+        if (!(f2 < r1 || f1 > r2)) {
+            std::cout << "Ya tienes una reserva en esas fechas.\n";
+            return;
+        }
+    }
+
+    // Crear código de reserva
+    char codReserva[10];
+    sprintf(codReserva, "R%03d", cantidadHistorico + h->getCantidadReservas() + 1); // simple
+
+    std::cout << "Metodo de pago: ";
+    char metodo[20];
+    std::cin.getline(metodo, 20);
+
+    int fechaPago = fechaInicio - 1;
+    float monto = elegido->getPrecioPorNoche() * duracion;
+    const char* anotacion = "Reservado desde plataforma";
+
+    Reservacion* nueva = new Reservacion(codReserva, fechaInicio, duracion, metodo, fechaPago, monto, anotacion, h, elegido);
+
+    h->agregarReservacion(nueva);
+    elegido->agregarReservacion(nueva);
+
+    std::cout << "\nReserva confirmada.\n";
+    std::cout << "Codigo: " << codReserva << "\n";
+    std::cout << "Huesped: " << h->getDocumento() << "\n";
+    std::cout << "Alojamiento: " << elegido->getCodigo() << "\n";
+    std::cout << "Desde: " << fechaInicio << "\n";
+    std::cout << "Hasta: " << (fechaInicio + duracion - 1) << "\n";
+}
+
+
+
+
