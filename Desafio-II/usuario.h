@@ -4,6 +4,7 @@
 class Usuario {
 protected:
     char* documento;
+    char *nombre;
     int antiguedad;
     float puntuacion;
 
@@ -14,6 +15,9 @@ public:
     virtual void mostrarMenu() = 0;
 
     float getPuntuacion() const;
+
+    const char* getNombre() const;
+    void setNombre(const char* nom);
 
 };
 

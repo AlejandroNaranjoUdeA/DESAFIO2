@@ -66,6 +66,10 @@ void Sistema::cargarHuespedes(const char* nombreArchivo) {
         if (!token) continue; //continue me permite seguir y pasar de linea en caso de error
         char* documento = token;
 
+        token= strtok(NULL, ",");
+        if(!token) continue;
+        char* nombre= token;
+
         token = strtok(NULL, ",");
         if (!token) continue;
         int antiguedad = atoi(token);
@@ -75,7 +79,7 @@ void Sistema::cargarHuespedes(const char* nombreArchivo) {
         float puntuacion = atof(token);
 
         // Crear el Huesped (el constructor hace su propia copia del documento)
-        Huesped* nuevo = new Huesped(documento, antiguedad, puntuacion);
+        Huesped* nuevo = new Huesped(documento, nombre, antiguedad, puntuacion);
 
         // Redimensionar el arreglo de huéspedes
         Huesped** nuevoArreglo = new Huesped*[cantidadHuespedes + 1];
@@ -111,6 +115,10 @@ void Sistema::cargarAnfitriones(const char* nombreArchivoAnfitriones){
         if (!token) continue; //continue me permite seguir y pasar de linea en caso de error
         char* documento = token;
 
+        token= strtok(NULL, ",");
+        if(!token) continue;
+        char* nombre= token;
+
         token = strtok(NULL, ",");
         if (!token) continue;
         int antiguedad = atoi(token);
@@ -120,7 +128,7 @@ void Sistema::cargarAnfitriones(const char* nombreArchivoAnfitriones){
         float puntuacion = atof(token);
 
         // Se crea el Anfitrion
-        Anfitrion* copia= new Anfitrion(documento, antiguedad, puntuacion);
+        Anfitrion* copia= new Anfitrion(documento, nombre, antiguedad, puntuacion);
 
         Anfitrion **nCopia= new Anfitrion *[cantidadAnfitriones +1];
         for(int i=0; i<cantidadAnfitriones; i++){
@@ -201,6 +209,8 @@ void Sistema::cargarAlojamineto(const char* nombreArchivoAlojamiento){
         delete[] alojamientos;
         alojamientos = nuevoArreglo;
         cantidadAlojamientos++;
+
+        anfitrion->agregarAlojamiento(nuevo);
     }
 
     archivo.close();
@@ -496,7 +506,7 @@ void Sistema::reservarAlojamiento(Huesped *h){
 
     std::cout << "\nReserva confirmada.\n";
     std::cout << "Codigo: " << codReserva << "\n";
-    std::cout << "Huesped: " << h->getDocumento() << "\n";
+    std::cout << "Huésped: " << h->getNombre() << " (" << h->getDocumento() << ")" << "\n";
     std::cout << "Alojamiento: " << elegido->getCodigo() << "\n";
     std::cout << "Desde: " << fechaInicio << "\n";
     std::cout << "Hasta: " << (fechaInicio + duracion - 1) << "\n";

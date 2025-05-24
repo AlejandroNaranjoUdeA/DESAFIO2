@@ -28,6 +28,9 @@ public:
 
     void agregarReservacion(Reservacion* r);
 
+    bool eliminarReservacionPorCodigo(const char* codigo);
+
+
 };
 
 #endif // ALOJAMIENTO_H

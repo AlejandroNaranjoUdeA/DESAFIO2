@@ -72,3 +72,26 @@ void Alojamiento::agregarReservacion(Reservacion* r) {
     reservas = nuevo;
     cantidadReservas++;
 }
+
+
+
+bool Alojamiento::eliminarReservacionPorCodigo(const char* codigo) {
+    int pos = -1;
+    for (int i = 0; i < cantidadReservas; i++) {
+        if (strcmp(reservas[i]->getCodigo(), codigo) == 0) {
+            pos = i;
+            break;
+        }
+    }
+
+    if (pos == -1) return false;
+
+    // Solo eliminamos el puntero, no el objeto (ya lo eliminó el huésped)
+    for (int i = pos; i < cantidadReservas - 1; i++) {
+        reservas[i] = reservas[i + 1];
+    }
+
+    cantidadReservas--;
+    return true;
+}
+

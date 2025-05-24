@@ -14,7 +14,7 @@ private:
     int cantidadReservas;
 
 public:
-    Huesped(const char* doc, int antig, float punt);
+    Huesped(const char* doc, const char* nom, int antig, float punt);
     ~Huesped();
     const char* getDocumento() const override;
     void setSistema(Sistema* s);  // método para inyectar el sistema
@@ -22,6 +22,9 @@ public:
     void agregarReservacion(Reservacion *r);
     int getCantidadReservas();
     Reservacion ** getReservas();
+
+    bool eliminarReservacionPorCodigo(const char* codigo);
+
 
 };
 

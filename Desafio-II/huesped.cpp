@@ -3,14 +3,18 @@
 #include <cstring>
 #include <iostream>
 
-Huesped::Huesped(const char* doc, int antig, float punt) {
+Huesped::Huesped(const char* doc, const char* nom, int antig, float punt) {
     documento = new char[strlen(doc) + 1];
     strcpy(documento, doc);
+
+    nombre = new char[strlen(nom) + 1];
+    strcpy(nombre, nom);
+
     antiguedad = antig;
     puntuacion = punt;
 
-    reservas= nullptr;
-    cantidadReservas=0;
+    reservas = nullptr;
+    cantidadReservas = 0;
 }
 
 Huesped::~Huesped(){
@@ -70,6 +74,19 @@ void Huesped::mostrarMenu() {
             break;
         }
         case 3:{
+            char codigo[20];
+            std::cout << "Ingrese el codigo de la reservacion a anular: ";
+            std::cin.ignore(); // limpiar si hace falta
+            std::cin.getline(codigo, 20);
+
+            if (eliminarReservacionPorCodigo(codigo)) {
+                std::cout << "Reservacion anulada correctamente.\n";
+            } else {
+                std::cout << "No se pudo anular la reservacion.\n";
+            }
+            break;
+        }
+        case 4:{
             std::cout<<"\nSaliendo del menu de huesped "<<std::endl;
         }
         default:
@@ -96,3 +113,33 @@ int Huesped::getCantidadReservas() {
 Reservacion** Huesped::getReservas() {
     return reservas;
 }
+
+bool Huesped::eliminarReservacionPorCodigo(const char* codigo) {
+    int pos = -1;
+    for (int i = 0; i < cantidadReservas; i++) {
+        if (strcmp(reservas[i]->getCodigo(), codigo) == 0) {
+            pos = i;
+            break;
+        }
+    }
+
+    if (pos == -1) {
+        std::cout << "Reservación no encontrada.\n";
+        return false;
+    }
+
+    // Eliminar también del alojamiento asociado
+    Alojamiento* a = reservas[pos]->getAlojamiento();
+    a->eliminarReservacionPorCodigo(codigo);
+
+    delete reservas[pos];
+
+    for (int i = pos; i < cantidadReservas - 1; i++) {
+        reservas[i] = reservas[i + 1];
+    }
+
+    cantidadReservas--;
+
+    return true;
+}
+

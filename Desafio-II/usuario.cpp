@@ -14,3 +14,13 @@ Usuario::~Usuario() {
 float Usuario::getPuntuacion() const {
     return puntuacion;
 }
+
+const char* Usuario::getNombre() const {
+    return nombre;
+}
+
+void Usuario::setNombre(const char* nom) {
+    if (nombre) delete[] nombre;
+    nombre = new char[strlen(nom) + 1];
+    strcpy(nombre, nom);
+}
