@@ -29,12 +29,43 @@ Reservacion::~Reservacion() {
 }
 
 // Getters
-const char* Reservacion::getCodigo() const { return codigo; }
-int Reservacion::getFechaInicio() const { return fechaInicio; }
-int Reservacion::getDuracion() const { return duracion; }
-const char* Reservacion::getMetodoPago() const { return metodoPago; }
-int Reservacion::getFechaPago() const { return fechaPago; }
-float Reservacion::getMonto() const { return monto; }
-const char* Reservacion::getAnotacion() const { return anotacion; }
-Huesped* Reservacion::getHuesped() const { return huesped; }
-Alojamiento* Reservacion::getAlojamiento() const { return alojamiento; }
+const char* Reservacion::getCodigo() const {
+    return codigo;
+}
+
+int Reservacion::getFechaInicio() const {
+    return fechaInicio;
+}
+
+int Reservacion::getDuracion() const {
+    return duracion;
+}
+
+const char* Reservacion::getMetodoPago() const {
+    return metodoPago;
+}
+
+int Reservacion::getFechaPago() const {
+    return fechaPago;
+}
+
+float Reservacion::getMonto() const {
+    return monto;
+}
+
+const char* Reservacion::getAnotacion() const {
+    return anotacion;
+}
+
+Huesped* Reservacion::getHuesped() const {
+    return huesped;
+}
+
+Alojamiento* Reservacion::getAlojamiento() const {
+    return alojamiento;
+}
+
+bool Reservacion::esAnteriorA(int fechaCorte) const {
+    int fechaFin = fechaInicio + duracion - 1;
+    return fechaFin < fechaCorte;
+}

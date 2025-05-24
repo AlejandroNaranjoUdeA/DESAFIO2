@@ -25,7 +25,11 @@ int main()
     Usuario* usuario = sistema.login(documento);
     if (usuario) {
         Huesped* h = dynamic_cast<Huesped*>(usuario);
-        if (h) h->setSistema(&sistema);  // 👈 importante
+        if (h) h->setSistema(&sistema);  // importante
+
+        Anfitrion *a = dynamic_cast<Anfitrion*>(usuario);
+        if (a) a->setSistema(&sistema);
+
         cout << "Inicio de sesion exitoso.\n";
         usuario->mostrarMenu(); // función virtual, muestra menú según tipo
     } else {

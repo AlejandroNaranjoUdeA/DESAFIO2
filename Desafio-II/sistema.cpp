@@ -68,7 +68,7 @@ void Sistema::cargarHuespedes(const char* nombreArchivo) {
 
         token= strtok(NULL, ",");
         if(!token) continue;
-        char* nombre= token;
+        char* nombre= token; //nombre
 
         token = strtok(NULL, ",");
         if (!token) continue;
@@ -309,8 +309,7 @@ void Sistema::cargarReservaciones(const char* nombreArchivoReservaciones){
             historico = nuevoHist;
             cantidadHistorico++;
         } else {
-            // Aquí más adelante poder asociarla a huésped/alojamiento si decides guardar las vigentes
-            // Por ahora se ignora, pero la reservación está viva en memoria si quieres usarla más adelante
+
         }
     }
 
@@ -506,10 +505,54 @@ void Sistema::reservarAlojamiento(Huesped *h){
 
     std::cout << "\nReserva confirmada.\n";
     std::cout << "Codigo: " << codReserva << "\n";
-    std::cout << "Huésped: " << h->getNombre() << " (" << h->getDocumento() << ")" << "\n";
+    std::cout << "Huesped: " << h->getNombre() << " (" << h->getDocumento() << ")" << "\n";
     std::cout << "Alojamiento: " << elegido->getCodigo() << "\n";
     std::cout << "Desde: " << fechaInicio << "\n";
     std::cout << "Hasta: " << (fechaInicio + duracion - 1) << "\n";
+}
+
+void Sistema::actualizarHistorico(int fechaCorte) {
+    std::ofstream archivo("historico.txt", std::ios::app); // modo append
+
+    if (!archivo) {
+        std::cout << "No se pudo abrir el archivo historico.\n";
+        return;
+    }
+
+    int totalMovidas = 0;
+
+    for (int i = 0; i < cantidadAlojamientos; i++) {
+        Alojamiento* a = alojamientos[i];
+        Reservacion** reservas = a->getReservas();
+        int n = a->getCantidadReservas();
+
+        int j = 0;
+        while (j < n) {
+            Reservacion* r = reservas[j];
+
+            if (r->esAnteriorA(fechaCorte)) {
+                // Guardar en archivo
+                archivo << r->getCodigo() << "," << r->getFechaInicio() << "," << r->getDuracion()
+                        << "," << r->getMonto() << "," << r->getMetodoPago() << ","
+                        << r->getAlojamiento()->getCodigo() << ","
+                        << r->getHuesped()->getDocumento() << "," << r->getAnotacion() << "\n";
+
+                // Eliminar del huésped y alojamiento
+                r->getHuesped()->eliminarReservacionPorCodigo(r->getCodigo());
+                a->eliminarReservacionPorCodigo(r->getCodigo());
+
+                delete r;
+                totalMovidas++;
+                n--; // se eliminó una, no avanzar j
+            } else {
+                j++;
+            }
+        }
+    }
+
+    archivo.close();
+
+    std::cout << "Total de reservaciones movidas al historico: " << totalMovidas << "\n";
 }
 
 

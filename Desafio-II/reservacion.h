@@ -29,6 +29,8 @@ public:
     const char* getAnotacion() const;
     Huesped* getHuesped() const;
     Alojamiento* getAlojamiento() const;
+    bool esAnteriorA(int fechaCorte) const;
+
 };
 
 #endif // RESERVACION_H
